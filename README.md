@@ -3,8 +3,8 @@
 AI-powered writing skills for book authors. Built for [Leanpub](https://leanpub.com).
 
 GhostAI operates at the filesystem level. It reads your full manuscript structure,
-maintains context across chapters, and edits in place. No copy-paste. No context
-limits. The AI works where you work.
+maintains context across chapters, and edits in place. No copy-paste. The AI
+works where you work.
 
 ## Install
 
