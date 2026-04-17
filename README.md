@@ -42,30 +42,25 @@ Claude Code discovers each `/ghost-*` command. No build step, no binaries.
 
 ### Getting Started
 
-| Skill | What it does |
-|-------|-------------|
-| `/ghost-start` | Creates your book: interviews you, generates an outline, scaffolds Markua files |
-| `/ghost-outline` | Deep chapter planning: iterative Q&A to build a detailed outline |
+**`/ghost-start`** — A conversational onboarding for your book. GhostAI interviews you about your topic, your audience, and what you're trying to accomplish, then builds a full chapter outline and sets up your manuscript so you can start writing immediately. No blank page.
+
+**`/ghost-outline`** — An in-depth chapter planning session. Goes beyond a flat table of contents: challenges your structure, asks what each chapter is really trying to do, and helps you decide what deserves a chapter versus what belongs as a section or a callout. Good for restructuring an outline you already have or building one from scratch.
 
 ### Writing
 
-| Skill | What it does |
-|-------|-------------|
-| `/ghost-draft` | Generates a first draft from your outline in your voice |
-| `/ghost-expand` | Turns bullet points and notes into polished prose |
+**`/ghost-draft`** — Turns an approved outline into a first-draft chapter that sounds like you. GhostAI analyzes your existing writing to profile your voice (sentence rhythm, vocabulary, tone) and uses that profile when drafting. You edit, rewrite, or keep whatever lands.
+
+**`/ghost-expand`** — Takes rough notes, bullet points, or stream-of-consciousness jotting and expands them into finished prose. Preserves your intent and phrasing where it works, smooths what doesn't. Best when you know what you want to say but haven't put it into flowing sentences yet.
 
 ### Editing
 
-| Skill | What it does |
-|-------|-------------|
-| `/ghost-review` | Reads your entire book. Finds cross-chapter issues no human catches on first read. |
-| `/ghost-edit` | Copy edits a single chapter: grammar, clarity, tone. Includes publish readiness checklist. |
+**`/ghost-review`** — A development editor that reads your entire manuscript, not just a chapter. Catches the problems authors and beta readers miss on first pass: a concept introduced in chapter 2 but defined in chapter 5, an argument that stalls in the middle, the same point repeated three times across different chapters, pacing that drags or rushes. This is where GhostAI's cross-chapter memory matters most.
+
+**`/ghost-edit`** — A copy editor for one chapter at a time. Catches grammar issues, flags awkward sentences, and suggests cleaner phrasing without flattening your voice. Runs a publish-readiness checklist before you ship: broken links, missing images, typos, inconsistent capitalization, placeholder text you forgot to fill in.
 
 ### Progress
 
-| Skill | What it does |
-|-------|-------------|
-| `/ghost-status` | Dashboard: word counts, reading times, chapter balance, estimated API costs |
+**`/ghost-status`** — A dashboard for your book at a glance. Word counts per chapter, estimated reading time, chapter length balance (are any chapters three times longer than the rest?), how much is drafted versus still outline. Also estimates costs for running the other GhostAI skills against your current manuscript, so you can budget before kicking off a full review.
 
 ## Quick Start
 
