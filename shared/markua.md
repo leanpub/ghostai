@@ -1,0 +1,212 @@
+# Markua Cheat Sheet for GhostAI
+
+Markua is "Markdown for books." Created by Peter Armstrong for Leanpub.
+Full spec: https://markua.com/
+Manual: https://leanpub.com/markua/read
+
+GhostAI skills must generate valid Markua and validate it in author manuscripts.
+This is the condensed reference covering what authors actually use.
+
+## Book.txt (Manifest File)
+
+Book.txt lists chapter files in reading order, one per line:
+
+```
+{frontmatter}
+preface.md
+introduction.md
+{mainmatter}
+chapter-01.md
+chapter-02.md
+chapter-03.md
+{backmatter}
+appendix-a.md
+glossary.md
+```
+
+- `{frontmatter}`, `{mainmatter}`, `{backmatter}` are section markers
+- Blank lines are ignored
+- Lines starting with `#` are comments
+- Each .md filename is relative to the manuscript directory
+
+## Headings
+
+```markua
+# Chapter Title
+## Section
+### Subsection
+#### Sub-subsection
+```
+
+Parts (grouping multiple chapters):
+```markua
+{class: part}
+# Part Title
+```
+
+## Asides (Callout Boxes)
+
+Markua uses letter-prefixed `>` for different aside types:
+
+```markua
+A> ## Aside Title
+A> This is a general aside or sidebar.
+
+W> ## Warning
+W> This is a warning callout.
+
+T> ## Tip
+T> This is a tip callout.
+
+E> ## Error
+E> This is an error/caution callout.
+
+I> ## Information
+I> This is an informational callout.
+
+Q> ## Question
+Q> This is a question callout.
+
+X> ## Exercise
+X> This is an exercise callout.
+
+D> ## Discussion
+D> This is a discussion callout.
+```
+
+## Blurbs
+
+```markua
+B> This is a blurb -- a highlighted block of text.
+B> Often used for key takeaways or pull quotes.
+
+{class: center}
+B> A centered blurb.
+```
+
+## Code Blocks
+
+Standard fenced code blocks with language info string:
+
+````markua
+```ruby
+def hello
+  puts "Hello, world!"
+end
+```
+````
+
+With attributes (title, line numbers):
+
+````markua
+{title: "A simple Ruby program", line-numbers: true}
+```ruby
+def hello
+  puts "Hello, world!"
+end
+```
+````
+
+Code from external files:
+
+```markua
+![A Ruby Program](hello.rb)
+```
+
+## Images and Figures
+
+```markua
+![Alt text](images/photo.png "Figure Title")
+```
+
+With attributes:
+
+```markua
+{width: "60%"}
+![Alt text](images/diagram.png "Figure Title")
+
+{class: fullwidth}
+![Full-width image](images/wide.png)
+```
+
+## Links
+
+Standard Markdown links:
+
+```markua
+[Link text](https://example.com)
+[Link text](https://example.com "Title")
+```
+
+Cross-references within the book:
+
+```markua
+See [Chapter 3](#chapter-3) for details.
+```
+
+## Footnotes
+
+```markua
+This has a footnote[^1].
+
+[^1]: This is the footnote content.
+```
+
+## Lists
+
+Standard Markdown ordered and unordered lists. Markua supports nested lists
+with 2-space or 4-space indentation.
+
+## Block Quotes
+
+```markua
+> This is a block quote.
+> It can span multiple lines.
+>
+> -- Attribution
+```
+
+## Document Settings
+
+At the very top of the manuscript (before any content):
+
+```markua
+{
+  lang: en
+}
+```
+
+## Sample Content
+
+Mark chapters/sections for inclusion in the free sample:
+
+```markua
+{sample: true}
+# This Chapter Is in the Free Sample
+```
+
+## Smart Typography
+
+Markua auto-converts:
+- `--` to en-dash
+- `---` to em-dash
+- `...` to ellipsis
+- Straight quotes to curly quotes
+
+## Key Differences from Standard Markdown
+
+1. **No raw HTML.** HTML is stripped entirely. Use Markua's native elements.
+2. **Asides replace custom divs.** Use `A>`, `W>`, `T>`, etc. instead of HTML divs.
+3. **Attributes use curly braces.** `{key: value}` before any block element.
+4. **Resources are unified.** Images, code files, videos all use `![title](file)` syntax.
+5. **Book structure is explicit.** `{frontmatter}`, `{mainmatter}`, `{backmatter}` in Book.txt.
+
+## Common Markua Validation Errors
+
+When reviewing or generating Markua, watch for:
+- Raw HTML (must be removed -- Markua strips it)
+- Missing Book.txt entries (file exists but not listed)
+- Broken cross-references (`[](#id)` where id doesn't exist)
+- Invalid aside prefixes (only A>, W>, T>, E>, I>, Q>, X>, D> are valid)
+- Attributes on wrong line (must be immediately before the element, no blank line between)
+- Unclosed code fences
