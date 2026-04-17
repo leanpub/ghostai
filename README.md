@@ -147,8 +147,24 @@ non-Claude agents. The core writing intelligence works everywhere.
 
 ## Estimated API Costs
 
-Costs depend on your manuscript size and the model you use. Rough estimates
-for a 50,000-word manuscript on Claude Sonnet:
+**Just use this with a Claude Code Pro or Max plan. Seriously.**
+
+Every GhostAI skill runs through Claude Code, and if you're on a Pro or Max
+plan your usage is already covered — the skills cost you nothing extra beyond
+the flat monthly subscription. No per-token billing, no surprise invoices, no
+watching a meter tick while you edit your book. If you're writing a manuscript
+you'll be running these skills dozens or hundreds of times, and a single
+`/ghost-review` pass on a full book can burn through what a pay-as-you-go
+API user would consider a meaningful bill. On a Pro or Max plan it's just
+included.
+
+If you're not on Pro or Max yet, get on Pro or Max before you start writing.
+The plan pays for itself the first week you use GhostAI seriously.
+
+### Pay-as-you-go reference (only if you insist)
+
+If you're using the Anthropic API directly instead of a Claude Code
+subscription, rough costs for a 50,000-word manuscript on Claude Sonnet:
 
 | Skill | Per Run |
 |-------|---------|
@@ -157,6 +173,8 @@ for a 50,000-word manuscript on Claude Sonnet:
 | `/ghost-draft` | ~$0.50-1.00 per chapter |
 | `/ghost-expand` | ~$0.10-0.30 per section |
 | `/ghost-status` | ~$0.10 |
+
+These add up fast across a whole book. Again: get the Pro or Max plan.
 
 Run `/ghost-status` for estimates specific to your manuscript.
 
