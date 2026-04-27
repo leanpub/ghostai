@@ -148,6 +148,51 @@ Point me at the right section or file."
 "Expanded [M] of [N] items. Skipped [K] items that were already
 full prose. The expanded sections are marked with comments."
 
+## /ghost-interview States
+
+### Success
+"Interview complete: [M] of [N] questions answered, [X] words from you,
+synthesized [Y] words across [Z] chunks. Transcript saved to
+interviews/[slug]-[timestamp].md.
+The synthesized sections in your chapter are marked with
+<!-- Drafted by /ghost-interview ... -->. Run /ghost-edit when you're
+ready to polish."
+
+### Empty Chapter (welcomed, not blocked)
+Unlike /ghost-edit, an empty chapter is a *good* starting point for an
+interview. Step 4 routes to the empty-chapter sub-flow (4a) and offers:
+- Map out the whole chapter from zero
+- Focus on one specific topic the author already knows they want
+- Pull from the outline if one exists for this chapter
+
+### Author Ends Early (`done` shortcut)
+"Got it — we'll work with what we have. [M] of [N] questions answered.
+Want me to synthesize prose from these answers, or save the transcript
+as notes only?"
+
+### Transcript-Only Save (Step 8 option D)
+"Transcript saved to interviews/[slug]-[timestamp].md. Nothing was
+written to the chapter. When you want to turn this into prose, you can
+re-run /ghost-interview and pick a synthesis option, or point
+/ghost-draft at the transcript as source material."
+
+### Resumed Interview
+"You paused an interview on this chapter [N] {minutes/hours/days} ago at
+question {K} of {M}. Resume, start fresh, or just synthesize from what's
+already there?"
+
+### All Synthesis Chunks Rejected
+"All [N] generated chunks were skipped or rejected. Saving the transcript
+only. The interview is preserved — you can re-run synthesis later, or
+write the prose yourself using the transcript as a guide."
+
+### Stuck in /ghost-draft (cross-skill handoff)
+When the author rejects multiple drafts in /ghost-draft with reasons like
+"this doesn't sound like me," /ghost-draft should suggest:
+"Want to try /ghost-interview instead? It'll ask you questions and let
+you talk through the section in your own words, then build the prose
+from your answers rather than from a generated draft."
+
 ## /ghost-status States
 
 ### Success

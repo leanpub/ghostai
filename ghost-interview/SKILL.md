@@ -255,9 +255,19 @@ These are firm — interviews that drift kill the point of the skill:
 
 ### Transcript buffer
 
-Maintain an in-memory transcript: a list of records with `{question_number,
-question_text, raw_answer, follow_up_question?, follow_up_answer?,
-timestamp}`. You'll save and synthesize from this in Steps 8–9.
+Before Q1, snapshot the source state into the transcript header so the
+transcript stays reproducible later, even if the chapter is rewritten:
+
+- Chapter filename, title, current word count
+- Scope picked in Step 4 (whole / §X.Y / passage with line range)
+- The actual content of the scoped slice at this moment, verbatim — so
+  someone reading the transcript later can see exactly what the questions
+  were referencing without diffing against git history
+
+Then maintain an in-memory transcript: a list of records with
+`{question_number, question_text, raw_answer, follow_up_question?,
+follow_up_answer?, timestamp}`. You'll save and synthesize from this in
+Steps 8–9.
 
 ## Step 8: Synthesize
 
@@ -325,6 +335,12 @@ a comment:
 <!-- Drafted by /ghost-interview from transcript on YYYY-MM-DD -->
 ```
 
+For each chunk, also record a synthesis log entry:
+`{chunk_number, source_questions: [Q3, Q5], synthesized_text, author_choice:
+"approved" | "tightened" | "reframed" | "skipped", final_text}`. This goes
+into the transcript file in Step 9b so the transcript becomes a
+self-contained record of input *and* output.
+
 ## Step 9: Persist
 
 Three things get saved:
@@ -352,6 +368,14 @@ Date: YYYY-MM-DD
 Angle: {angle picked in Step 5}
 Duration: {minutes}
 
+## Source state at interview time
+Chapter: {filename} ({word count} words)
+Scope: {whole / §X.Y title / passage at lines A-B}
+
+```
+{verbatim content of the scoped slice at the moment the interview started}
+```
+
 ## Q1: {question text}
 {raw answer}
 
@@ -362,11 +386,27 @@ Duration: {minutes}
 [skipped]
 
 ...
+
+## Synthesis (only if Step 8 produced prose)
+
+### Chunk 1 — sourced from Q1, Q3
+**Synthesized draft:**
+{the prose generated, before approval}
+
+**Author choice:** approved | tightened | reframed | skipped
+
+**Final applied text:**
+{what actually went into the chapter, after any iteration}
+
+### Chunk 2 — ...
 ```
 
-The transcript is reusable: the author can re-run synthesis later with a
-different framing, or feed transcripts into `/ghost-voice` to refine the
-voice profile.
+The transcript is reusable in three ways:
+- Re-run synthesis later with a different framing (the source state is
+  preserved, so the questions still make sense)
+- Feed into `/ghost-voice` to refine the voice profile from spoken samples
+- Compare what the author *said* against what the AI *wrote* — useful for
+  debugging synthesis quality without diffing the chapter against git
 
 ### 9c. Learnings
 Append to `learnings.jsonl` in the anchor tier (`$GHOST_ANCHOR_TIER`):
