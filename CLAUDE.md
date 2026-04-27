@@ -14,6 +14,7 @@ across chapters, and editing in place.
 | `/ghost-edit` | Copy editor + pre-flight | Before publishing any chapter |
 | `/ghost-draft` | First draft generator | Turning an outline into prose |
 | `/ghost-expand` | Bullet-to-prose expander | Turning notes into polished text |
+| `/ghost-interview` | Interview-driven writing | When you know the material but can't get it on the page in your voice |
 | `/ghost-status` | Manuscript dashboard | Checking progress anytime |
 | `/ghost-voice` | Voice profile manager | Updating, promoting, or sharing your voice profile across tiers |
 
@@ -55,5 +56,14 @@ Key routing rules:
 - "Edit", "proofread", "check my chapter", "before I publish" → invoke ghost-edit
 - "Write a draft", "generate a chapter", "draft from outline" → invoke ghost-draft
 - "Expand", "flesh out", "turn bullets into prose" → invoke ghost-expand
+- "Interview me", "talk through a chapter", "let me explain this out loud", "this doesn't sound like me" → invoke ghost-interview
 - "Status", "progress", "how's my book", "word count" → invoke ghost-status
 - "Update voice", "change voice profile", "promote voice", "share voice" → invoke ghost-voice
+
+Disambiguating the writing skills (draft vs. expand vs. interview): they
+overlap on verbs ("write", "draft") but differ on the author's *state*.
+Pick by what's blocking them, not what they typed:
+- Blank page, no notes → `/ghost-draft` (AI proposes, author reacts)
+- Notes/bullets, just need prose → `/ghost-expand`
+- Knows the material cold but the prose won't sound right → `/ghost-interview`
+- "I'm stuck" with no other signal → ask which kind of stuck, then route

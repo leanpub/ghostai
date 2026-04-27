@@ -52,6 +52,8 @@ Claude Code discovers each `/ghost-*` command. No build step, no binaries.
 
 **`/ghost-expand`** — Takes rough notes, bullet points, or stream-of-consciousness jotting and expands them into finished prose. Preserves your intent and phrasing where it works, smooths what doesn't. Best when you know what you want to say but haven't put it into flowing sentences yet.
 
+**`/ghost-interview`** — Inverts the usual writing flow. GhostAI interviews you with short questions about a chapter or section, you answer in your own words (typed or via voice input like Wispr Flow), and the transcript becomes prose with your verbatim phrasing leading. Best when you know the material cold but the page won't sound like you, or when you want to talk a chapter into existence rather than type it. Transcripts are saved alongside the manuscript and can feed back into your voice profile.
+
 ### Editing
 
 **`/ghost-review`** — A development editor that reads your entire manuscript, not just a chapter. Catches the problems authors and beta readers miss on first pass: a concept introduced in chapter 2 but defined in chapter 5, an argument that stalls in the middle, the same point repeated three times across different chapters, pacing that drags or rushes. This is where GhostAI's cross-chapter memory matters most.
@@ -189,6 +191,7 @@ rough costs for a 50,000-word manuscript on Claude Sonnet:
 | `/ghost-edit` | ~$0.20-0.50 per chapter |
 | `/ghost-draft` | ~$0.50-1.00 per chapter |
 | `/ghost-expand` | ~$0.10-0.30 per section |
+| `/ghost-interview` | ~$0.30-0.80 per chapter (depends on interview length) |
 | `/ghost-status` | ~$0.10 |
 
 These add up fast across a whole book. Again: get a Claude Pro or Claude Max plan.
@@ -205,6 +208,7 @@ ghostai/
   ghost-edit/SKILL.md           # Copy editor (5 specialists)
   ghost-draft/SKILL.md          # First draft generator
   ghost-expand/SKILL.md         # Bullet-to-prose expander
+  ghost-interview/SKILL.md      # Interview-driven writing (transcript → prose)
   ghost-status/SKILL.md         # Manuscript dashboard
   ghost-voice/SKILL.md          # Voice profile manager (cross-tier)
   shared/                       # Shared skill infrastructure
