@@ -55,10 +55,20 @@ terminology), some don't.
 
 ## Picking a tier
 
-- **Solo author, one machine** → project-local is fine. The default.
-- **Solo author, multiple machines** → global, so you don't re-train your
-  voice on every machine.
-- **Co-authored book** → in-repo for voice and style guide. Personal
-  preferences (learnings) can stay project-local.
+Each tier scopes the config along a different axis:
+
+- **Global** = every project, this machine
+- **Project-local** = this project, this machine
+- **In-repo** = this project, every machine (because git syncs the repo)
+
+So:
+
+- **You write one book on one machine** → project-local is fine. The default.
+- **You write many books on one machine and want a consistent voice across
+  all of them** → global, so you don't re-train it for each new book.
+- **You write one book and switch between machines** → in-repo. The voice
+  follows the manuscript through git, no syncing needed.
+- **Co-authored book** → in-repo for voice and style guide so everyone
+  shares them. Personal preferences (learnings) can stay project-local.
 - **Trying a new voice for one book** → in-repo overrides whatever you have
   globally for just this manuscript.
