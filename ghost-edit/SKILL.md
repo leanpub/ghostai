@@ -64,11 +64,19 @@ Also read from the shared directory:
 
 ## Step 3: Load Voice and Style Context
 
-The preamble already resolved these across tiers. Read whichever exist:
-- `$GHOST_VOICE_FILE` (voice profile, if `$GHOST_VOICE_TIER` is not `none`)
-- `$GHOST_STYLE_FILE` (style guide, if `$GHOST_STYLE_TIER` is not `none`)
-- `$GHOST_LEARNINGS_FILE` (learnings, if `$GHOST_LEARNINGS_TIER` is not `none`) —
-  filter to terminology preferences and style decisions relevant to editing
+The preamble has already picked exactly one tier per config (highest existing
+wins — there is no merging). Each variable below holds the single resolved
+path or is empty when no tier has the file. Read each one only when its
+matching `*_TIER` is not `none`:
+
+- `$GHOST_VOICE_FILE` — the voice profile (one file, from the winning tier)
+- `$GHOST_STYLE_FILE` — the style guide (one file, from the winning tier)
+- `$GHOST_LEARNINGS_FILE` — the learnings log (one file, from the winning
+  tier); filter to terminology preferences and style decisions relevant to
+  editing
+
+Do not read the same config from a lower tier as well — that's exactly what
+the resolver is preventing.
 
 Your suggestions must respect these. If the author's voice profile shows they
 use short, casual sentences, don't suggest making them longer and more formal.

@@ -56,6 +56,12 @@ echo "ANCHOR_TIER: $GHOST_ANCHOR_TIER"
 are created lazily by whichever skill actually writes (see "Writing config"
 below).
 
+**One file per config, no merging.** Each `$GHOST_*_FILE` variable holds a
+single path — the file at the highest tier that has it. If a skill needs the
+voice profile, it reads `$GHOST_VOICE_FILE` once and never looks at lower
+tiers. Same for style, learnings, and reviews. The resolver's whole job is to
+make this decision so skills don't have to.
+
 ## Interpret Results
 
 **If `EMPTY_MANUSCRIPT`:** Tell the author:

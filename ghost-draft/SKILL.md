@@ -67,9 +67,13 @@ they should be able to DO after reading it."
 
 ## Step 3: Load Voice and Context
 
-Read whichever configs the preamble resolved:
-- `$GHOST_VOICE_FILE` if `$GHOST_VOICE_TIER` is not `none`
-- `$GHOST_STYLE_FILE` if `$GHOST_STYLE_TIER` is not `none`
+The preamble has already picked exactly one tier per config (highest existing
+wins, no merging). Each variable below holds the single resolved path. Read
+each one only when its matching `*_TIER` is not `none`, and don't read the
+same config from any other tier:
+
+- `$GHOST_VOICE_FILE` — the voice profile
+- `$GHOST_STYLE_FILE` — the style guide
 
 Read 1-2 existing chapters for voice calibration.
 Read surrounding chapters (previous and next in Book.txt) for context.
