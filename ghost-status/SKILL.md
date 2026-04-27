@@ -56,24 +56,45 @@ Compute manuscript-wide stats:
 
 ## Step 3: Check GhostAI State
 
-Check the persistence directory:
+The preamble resolved each config to its highest-tier file. Report what was
+found and which tier it came from:
 
 ```bash
-GHOST_SLUG=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
-GHOST_DATA="$HOME/.ghostai/projects/$GHOST_SLUG"
-
 # Voice profile
-[ -f "$GHOST_DATA/voice-profile.json" ] && echo "VOICE: profiled" || echo "VOICE: not profiled"
+if [ "$GHOST_VOICE_TIER" = "none" ]; then
+  echo "VOICE: not profiled"
+else
+  echo "VOICE: profiled ($(ghost_source_label "$GHOST_VOICE_TIER"))"
+fi
 
 # Style guide
-[ -f "$GHOST_DATA/style-guide.md" ] && echo "STYLE_GUIDE: yes" || echo "STYLE_GUIDE: no"
+if [ "$GHOST_STYLE_TIER" = "none" ]; then
+  echo "STYLE_GUIDE: no"
+else
+  echo "STYLE_GUIDE: yes ($(ghost_source_label "$GHOST_STYLE_TIER"))"
+fi
 
 # Learnings
-[ -f "$GHOST_DATA/learnings.jsonl" ] && echo "LEARNINGS: $(wc -l < "$GHOST_DATA/learnings.jsonl" | tr -d ' ')" || echo "LEARNINGS: 0"
+if [ "$GHOST_LEARNINGS_TIER" = "none" ]; then
+  echo "LEARNINGS: 0"
+else
+  echo "LEARNINGS: $(wc -l < "$GHOST_LEARNINGS_FILE" | tr -d ' ') ($(ghost_source_label "$GHOST_LEARNINGS_TIER"))"
+fi
 
 # Last review
-LAST_REVIEW=$(ls -t "$GHOST_DATA/reviews/"*.md 2>/dev/null | head -1)
-[ -n "$LAST_REVIEW" ] && echo "LAST_REVIEW: $LAST_REVIEW" || echo "LAST_REVIEW: none"
+if [ "$GHOST_REVIEWS_TIER" = "none" ]; then
+  echo "LAST_REVIEW: none"
+else
+  LAST_REVIEW=$(ls -t "$GHOST_REVIEWS_DIR/"*.md 2>/dev/null | head -1)
+  [ -n "$LAST_REVIEW" ] && echo "LAST_REVIEW: $LAST_REVIEW" || echo "LAST_REVIEW: none"
+fi
+```
+
+When rendering the dashboard, surface the tier in natural language with the
+path de-emphasized as inline code, e.g.:
+
+```
+Voice profile · from this book's repository · `.ghostai/voice-profile.json`
 ```
 
 ## Step 4: Present Dashboard

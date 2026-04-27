@@ -15,6 +15,7 @@ across chapters, and editing in place.
 | `/ghost-draft` | First draft generator | Turning an outline into prose |
 | `/ghost-expand` | Bullet-to-prose expander | Turning notes into polished text |
 | `/ghost-status` | Manuscript dashboard | Checking progress anytime |
+| `/ghost-voice` | Voice profile manager | Updating, promoting, or sharing your voice profile across tiers |
 
 ## Manuscript Format
 
@@ -25,11 +26,22 @@ GhostAI expects Leanpub-style manuscripts in Markua format:
 
 ## Persistence
 
-GhostAI stores project data in `~/.ghostai/projects/{project-name}/`:
+GhostAI looks for each config in three tiers (highest existing wins, no merging):
+
+1. **Global** — `~/.ghostai/<file>` (machine-wide default)
+2. **Project-local** — `~/.ghostai/projects/{slug}/<file>` (per-book on this machine)
+3. **In-repo** — `{repo}/.ghostai/<file>` (committable alongside the manuscript)
+
+The configs are:
 - `voice-profile.json` — extracted writing style characteristics
 - `style-guide.md` — documented style preferences
 - `learnings.jsonl` — terminology and style decisions from past sessions
 - `reviews/` — saved review reports
+
+When creating a new voice profile or style guide, GhostAI asks which tier to
+save to. Subsequent silent writes (learnings, reviews) follow the same tier
+via `~/.ghostai/projects/{slug}/.tier`. See `shared/config-hierarchy.md` for
+the full model and the recommended `.gitignore` for in-repo configs.
 
 ## Skill Routing
 
@@ -44,3 +56,4 @@ Key routing rules:
 - "Write a draft", "generate a chapter", "draft from outline" → invoke ghost-draft
 - "Expand", "flesh out", "turn bullets into prose" → invoke ghost-expand
 - "Status", "progress", "how's my book", "word count" → invoke ghost-status
+- "Update voice", "change voice profile", "promote voice", "share voice" → invoke ghost-voice

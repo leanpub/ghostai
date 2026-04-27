@@ -120,7 +120,20 @@ The #1 complaint with AI writing tools is voice erasure. GhostAI addresses this:
 - **Advisory slop detection:** Flags AI-generated patterns without auto-correcting
 - **Direct quotes:** References your actual text in feedback, not abstractions
 
-Your voice profile and style guide are saved to `~/.ghostai/` and persist across sessions.
+Your voice profile and style guide can live in any of three places, with the
+highest existing tier winning on load (no merging):
+
+1. **In your global defaults** — `~/.ghostai/voice-profile.json`. A voice you
+   want to bring to every new book without re-uploading samples.
+2. **In a project-local store** — `~/.ghostai/projects/{slug}/voice-profile.json`.
+   Per-book on this machine, doesn't follow the manuscript when you push to git.
+3. **In the manuscript's repo** — `{repo}/.ghostai/voice-profile.json`. Lives
+   alongside your book so co-authors share the voice.
+
+GhostAI asks where to save when you create the profile (during `/ghost-start`
+or via `/ghost-voice`), and remembers your choice. Run `/ghost-voice` later to
+update, promote between tiers, or share with co-authors. See
+[`shared/config-hierarchy.md`](shared/config-hierarchy.md) for the full model.
 
 ### What Makes GhostAI Different
 
@@ -193,8 +206,11 @@ ghostai/
   ghost-draft/SKILL.md          # First draft generator
   ghost-expand/SKILL.md         # Bullet-to-prose expander
   ghost-status/SKILL.md         # Manuscript dashboard
+  ghost-voice/SKILL.md          # Voice profile manager (cross-tier)
   shared/                       # Shared skill infrastructure
     preamble-core.md            # Manuscript detection & loading
+    resolve-config.sh           # 3-tier config resolver (sourced by preamble)
+    config-hierarchy.md         # Author-facing tier model + .gitignore template
     markua.md                   # Markua syntax cheat sheet
     anti-slop.md                # AI writing pattern detection
     voice.md                    # Editorial voice guidelines

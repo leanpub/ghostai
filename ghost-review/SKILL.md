@@ -65,14 +65,31 @@ Also read (from the shared directory):
 
 ## Step 3: Voice Profile Check
 
-If a voice profile exists at `~/.ghostai/projects/{slug}/voice-profile.json`,
-read it. Note the author's style characteristics. Your feedback should respect
-their voice.
+The preamble already resolved `$GHOST_VOICE_FILE` and `$GHOST_STYLE_FILE` to
+the highest existing tier (in-repo > project-local > global). If a profile or
+style guide is loaded, note the author's style characteristics. Your feedback
+should respect their voice.
 
-If a style guide exists at `~/.ghostai/projects/{slug}/style-guide.md`, read it.
-Enforce documented preferences.
+If neither exists at any tier and 3+ chapters with 5,000+ total words exist,
+generate both. First, ask the author where to save them via AskUserQuestion
+(skip the prompt if `GHOSTAI_DEFAULT_TIER` is set):
 
-If neither exists and 3+ chapters with 5,000+ total words exist, generate both:
+> "I have enough material to build a voice profile and style guide. Where
+> should I save them?"
+>
+> - A) **In this book's repository** (`.ghostai/`) — shared via git
+> - B) **Project-local on this machine** (`~/.ghostai/projects/{slug}/`) — current default
+> - C) **Global default for this machine** (`~/.ghostai/`) — used everywhere
+
+Then write to the chosen tier and record the anchor:
+
+```bash
+target_dir=$(ghost_tier_dir "$chosen_tier")
+mkdir -p "$target_dir"
+# Write "$target_dir/voice-profile.json" and "$target_dir/style-guide.md"
+mkdir -p "$GHOST_TIER_PROJECT"
+echo "$chosen_tier" > "$GHOST_TIER_PROJECT/.tier"
+```
 
 1. **Voice profile:** Analyze 2-3 chapters. Extract:
    - Average sentence length
@@ -81,15 +98,13 @@ If neither exists and 3+ chapters with 5,000+ total words exist, generate both:
    - Formality level
    - Use of humor, anecdotes, rhetorical questions
    - Paragraph length patterns
-   Save to `~/.ghostai/projects/{slug}/voice-profile.json`
 
-2. **Style guide:** Generate a human-readable style guide documenting observed
+2. **Style guide:** A human-readable Markdown doc documenting observed
    patterns (comma conventions, capitalization, code formatting, terminology).
-   Save to `~/.ghostai/projects/{slug}/style-guide.md`
 
-Tell the author: "I generated a voice profile and style guide from your manuscript.
-Saved to ~/.ghostai/. Review the style guide and edit anything that doesn't match
-your intent."
+Tell the author which tier you saved to in natural language, e.g. "Saved your
+voice profile and style guide to this book's repository (`.ghostai/`). Review
+the style guide and edit anything that doesn't match your intent."
 
 ## Step 4: Run Specialist Passes (Interactive)
 
@@ -181,7 +196,14 @@ The author should feel the reader's experience, not just see a list of issues.
 ## Step 8: Log Learnings
 
 If the review discovered terminology preferences, voice patterns, or structural
-decisions, log them to `~/.ghostai/projects/{slug}/learnings.jsonl`:
+decisions, append them to `learnings.jsonl` in the anchor tier
+(`$GHOST_ANCHOR_TIER`):
+
+```bash
+target_dir=$(ghost_tier_dir "$GHOST_ANCHOR_TIER")
+mkdir -p "$target_dir"
+# Append JSON lines to "$target_dir/learnings.jsonl"
+```
 
 ```json
 {"type":"terminology","decision":"use 'container' not 'Docker container'","source":"ghost-review","ts":"...","chapter":"manuscript-wide"}
@@ -190,10 +212,12 @@ decisions, log them to `~/.ghostai/projects/{slug}/learnings.jsonl`:
 
 ## Step 9: Save Report and Complete
 
-Save the full review report to `~/.ghostai/projects/{slug}/reviews/`:
+Save the full review report under `reviews/` in the anchor tier:
 
 ```bash
-mkdir -p ~/.ghostai/projects/{slug}/reviews
+target_dir=$(ghost_tier_dir "$GHOST_ANCHOR_TIER")
+mkdir -p "$target_dir/reviews"
+# Write the timestamped report to "$target_dir/reviews/<timestamp>.md"
 ```
 
 Write the report as a timestamped Markdown file.

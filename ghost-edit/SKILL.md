@@ -64,11 +64,19 @@ Also read from the shared directory:
 
 ## Step 3: Load Voice and Style Context
 
-Read the voice profile (`~/.ghostai/projects/{slug}/voice-profile.json`) and
-style guide (`~/.ghostai/projects/{slug}/style-guide.md`) if they exist.
+The preamble has already picked exactly one tier per config (highest existing
+wins — there is no merging). Each variable below holds the single resolved
+path or is empty when no tier has the file. Read each one only when its
+matching `*_TIER` is not `none`:
 
-Also read any learnings (`~/.ghostai/projects/{slug}/learnings.jsonl`) that
-are relevant to editing: terminology preferences, style decisions.
+- `$GHOST_VOICE_FILE` — the voice profile (one file, from the winning tier)
+- `$GHOST_STYLE_FILE` — the style guide (one file, from the winning tier)
+- `$GHOST_LEARNINGS_FILE` — the learnings log (one file, from the winning
+  tier); filter to terminology preferences and style decisions relevant to
+  editing
+
+Do not read the same config from a lower tier as well — that's exactly what
+the resolver is preventing.
 
 Your suggestions must respect these. If the author's voice profile shows they
 use short, casual sentences, don't suggest making them longer and more formal.
@@ -174,7 +182,14 @@ and publish when ready."
 
 ## Step 9: Log Learnings
 
-If editing revealed terminology preferences or style patterns, log them:
+If editing revealed terminology preferences or style patterns, append to
+`learnings.jsonl` in the anchor tier (`$GHOST_ANCHOR_TIER`):
+
+```bash
+target_dir=$(ghost_tier_dir "$GHOST_ANCHOR_TIER")
+mkdir -p "$target_dir"
+# Append a JSON line to "$target_dir/learnings.jsonl"
+```
 
 ```json
 {"type":"terminology","decision":"dataset not data set","source":"ghost-edit","ts":"...","chapter":"chapter-03.md"}

@@ -1,9 +1,9 @@
 # GhostAI Shared Preamble (Core)
 
 Every GhostAI skill starts by running this preamble. It detects the manuscript,
-reads the structure, loads persistence, and presents an overview.
+resolves config across three tiers, and presents an overview.
 
-## Manuscript Detection
+## Manuscript Detection + Config Resolution
 
 Run this bash block first:
 
@@ -37,34 +37,30 @@ else
   fi
 fi
 
-# GhostAI persistence directory
+# Resolve config across global / project-local / in-repo tiers.
+# Sets GHOST_VOICE_FILE, GHOST_VOICE_TIER, etc. See shared/config-hierarchy.md.
 GHOST_SLUG=$(basename "$GHOST_ROOT")
-GHOST_DATA="$HOME/.ghostai/projects/$GHOST_SLUG"
-mkdir -p "$GHOST_DATA"
-echo "GHOST_DATA: $GHOST_DATA"
+# shellcheck source=resolve-config.sh
+source "$GHOST_SKILL_DIR/shared/resolve-config.sh"
 
-# Load learnings if they exist
-if [ -f "$GHOST_DATA/learnings.jsonl" ]; then
-  LEARN_COUNT=$(wc -l < "$GHOST_DATA/learnings.jsonl" | tr -d ' ')
-  echo "LEARNINGS: $LEARN_COUNT entries"
-else
-  echo "LEARNINGS: 0"
-fi
-
-# Load voice profile if it exists
-if [ -f "$GHOST_DATA/voice-profile.json" ]; then
-  echo "VOICE_PROFILE: found"
-else
-  echo "VOICE_PROFILE: none"
-fi
-
-# Load style guide if it exists
-if [ -f "$GHOST_DATA/style-guide.md" ]; then
-  echo "STYLE_GUIDE: found"
-else
-  echo "STYLE_GUIDE: none"
-fi
+echo "GHOST_SLUG: $GHOST_SLUG"
+echo "VOICE_PROFILE: $GHOST_VOICE_TIER${GHOST_VOICE_FILE:+ ($GHOST_VOICE_FILE)}"
+echo "STYLE_GUIDE: $GHOST_STYLE_TIER${GHOST_STYLE_FILE:+ ($GHOST_STYLE_FILE)}"
+echo "LEARNINGS: $GHOST_LEARNINGS_TIER${GHOST_LEARNINGS_FILE:+ ($GHOST_LEARNINGS_FILE)}"
+echo "REVIEWS: $GHOST_REVIEWS_TIER${GHOST_REVIEWS_DIR:+ ($GHOST_REVIEWS_DIR)}"
+echo "ANCHOR_TIER: $GHOST_ANCHOR_TIER"
 ```
+
+**No mkdir at read time.** The preamble used to create
+`~/.ghostai/projects/{slug}/` unconditionally. It no longer does — directories
+are created lazily by whichever skill actually writes (see "Writing config"
+below).
+
+**One file per config, no merging.** Each `$GHOST_*_FILE` variable holds a
+single path — the file at the highest tier that has it. If a skill needs the
+voice profile, it reads `$GHOST_VOICE_FILE` once and never looks at lower
+tiers. Same for style, learnings, and reviews. The resolver's whole job is to
+make this decision so skills don't have to.
 
 ## Interpret Results
 
@@ -99,16 +95,32 @@ After detecting the manuscript, read Book.txt and present an overview:
 │  GhostAI /[skill-name]                          │
 │  Manuscript: "[book title]" ([N] chapters)      │
 │  Total: [X] words (~[Y] hr read)                │
-│  Voice: [profile summary or "not profiled yet"] │
+│  Voice: [source label or "not profiled yet"]    │
 └─────────────────────────────────────────────────┘
 ```
+
+For the Voice line (and any other config sources you want to surface), use
+natural language with the path de-emphasized as inline code:
+
+```
+Voice: from this book's repository · `.ghostai/voice-profile.json`
+```
+
+Helper phrases by tier:
+- `repo` → "from this book's repository"
+- `project` → "from your project's local store"
+- `global` → "from your global defaults"
+- `none` → "not profiled yet"
+
+(`shared/resolve-config.sh` provides `ghost_source_label <tier>` if you'd
+rather call the helper directly.)
 
 Reading time estimate: words / 250 (average reading speed for technical content).
 
 ## Load Learnings
 
-If `LEARNINGS` count > 0, read `~/.ghostai/projects/{slug}/learnings.jsonl`.
-Each line is a JSON object with fields: type, decision, source, ts, chapter.
+If `$GHOST_LEARNINGS_TIER` is not `none`, read `$GHOST_LEARNINGS_FILE`. Each
+line is a JSON object with fields: type, decision, source, ts, chapter.
 Filter learnings relevant to the current skill's task.
 
 Skills that edit text should load: terminology, style learnings.
@@ -120,12 +132,31 @@ not 'data set' (from your last /ghost-edit session)."
 
 ## Voice Profile
 
-If `VOICE_PROFILE` is found, read `~/.ghostai/projects/{slug}/voice-profile.json`.
-Use it as a soft constraint for any text generation or editing suggestions.
+If `$GHOST_VOICE_TIER` is not `none`, read `$GHOST_VOICE_FILE` (it lives at
+the highest tier where a profile exists). Use it as a soft constraint for any
+text generation or editing suggestions.
 
-If no voice profile exists and the skill needs one (ghost-edit, ghost-draft,
-ghost-expand), note: "No voice profile yet. Run /ghost-start with a writing
-sample, or I'll create one after analyzing 2-3 of your chapters."
+If no voice profile exists at any tier and the skill needs one (ghost-edit,
+ghost-draft, ghost-expand), note: "No voice profile yet. Run /ghost-start
+with a writing sample, or `/ghost-voice` to set one up at any tier (global,
+project-local, or in-repo)."
+
+## Writing config
+
+When a skill creates or updates a config file, it must:
+
+1. Decide the target tier. For voice/style: ask the author via
+   AskUserQuestion (see `/ghost-voice` and `/ghost-start` for the canonical
+   tier-selection prompt). For learnings/reviews: use `$GHOST_ANCHOR_TIER`.
+2. Resolve the target directory with `ghost_tier_dir <tier>` from
+   `resolve-config.sh`. Example:
+   ```bash
+   target_dir=$(ghost_tier_dir "$chosen_tier")
+   mkdir -p "$target_dir"
+   ```
+3. Write the file. If the target tier is anything other than `project`, also
+   create `$GHOST_TIER_PROJECT/.tier` with the chosen tier name so silent
+   writes (learnings, reviews) follow the same anchor.
 
 ## Single-Read Architecture
 

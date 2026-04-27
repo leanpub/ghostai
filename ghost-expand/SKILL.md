@@ -47,7 +47,10 @@ Also read:
 **If invoked with a filename:** Use that file.
 **Otherwise:** Ask via AskUserQuestion which chapter/file to work on.
 
-Read the file. Load voice profile and style guide.
+Read the file. Each of `$GHOST_VOICE_FILE` and `$GHOST_STYLE_FILE` holds a
+single resolved path (the highest tier where that config exists — no
+merging). Load each one only when its matching `*_TIER` is not `none`, and
+don't read the same config from any other tier.
 
 ## Step 3: Identify and Discuss Expandable Content
 
