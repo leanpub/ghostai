@@ -67,7 +67,10 @@ they should be able to DO after reading it."
 
 ## Step 3: Load Voice and Context
 
-Read voice profile and style guide from `~/.ghostai/projects/{slug}/`.
+Read whichever configs the preamble resolved:
+- `$GHOST_VOICE_FILE` if `$GHOST_VOICE_TIER` is not `none`
+- `$GHOST_STYLE_FILE` if `$GHOST_STYLE_TIER` is not `none`
+
 Read 1-2 existing chapters for voice calibration.
 Read surrounding chapters (previous and next in Book.txt) for context.
 

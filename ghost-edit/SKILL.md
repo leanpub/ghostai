@@ -64,11 +64,11 @@ Also read from the shared directory:
 
 ## Step 3: Load Voice and Style Context
 
-Read the voice profile (`~/.ghostai/projects/{slug}/voice-profile.json`) and
-style guide (`~/.ghostai/projects/{slug}/style-guide.md`) if they exist.
-
-Also read any learnings (`~/.ghostai/projects/{slug}/learnings.jsonl`) that
-are relevant to editing: terminology preferences, style decisions.
+The preamble already resolved these across tiers. Read whichever exist:
+- `$GHOST_VOICE_FILE` (voice profile, if `$GHOST_VOICE_TIER` is not `none`)
+- `$GHOST_STYLE_FILE` (style guide, if `$GHOST_STYLE_TIER` is not `none`)
+- `$GHOST_LEARNINGS_FILE` (learnings, if `$GHOST_LEARNINGS_TIER` is not `none`) —
+  filter to terminology preferences and style decisions relevant to editing
 
 Your suggestions must respect these. If the author's voice profile shows they
 use short, casual sentences, don't suggest making them longer and more formal.
@@ -174,7 +174,14 @@ and publish when ready."
 
 ## Step 9: Log Learnings
 
-If editing revealed terminology preferences or style patterns, log them:
+If editing revealed terminology preferences or style patterns, append to
+`learnings.jsonl` in the anchor tier (`$GHOST_ANCHOR_TIER`):
+
+```bash
+target_dir=$(ghost_tier_dir "$GHOST_ANCHOR_TIER")
+mkdir -p "$target_dir"
+# Append a JSON line to "$target_dir/learnings.jsonl"
+```
 
 ```json
 {"type":"terminology","decision":"dataset not data set","source":"ghost-edit","ts":"...","chapter":"chapter-03.md"}

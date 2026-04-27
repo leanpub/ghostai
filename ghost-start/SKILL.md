@@ -193,13 +193,51 @@ outline points as HTML comments.
 
 ## Step 9: Set Up Persistence
 
+The preamble already resolved tier paths. Now decide where to save the new
+voice profile (and any other configs). GhostAI supports three tiers — see
+`shared/config-hierarchy.md`.
+
+If `GHOSTAI_DEFAULT_TIER` is set in the environment, use it without asking.
+Otherwise, ask via AskUserQuestion:
+
+> "Where should I save your voice profile? You can move it later with
+> `/ghost-voice`."
+>
+> - A) **In this book's repository** — committed alongside the manuscript so
+>      co-authors share it. Saves to `.ghostai/voice-profile.json`. *(Recommended
+>      for collaborative books.)*
+> - B) **Project-local on this machine** — stays in your home directory, doesn't
+>      follow the repo. Saves to `~/.ghostai/projects/{slug}/voice-profile.json`.
+> - C) **Global default for this machine** — used as a fallback for every new
+>      book. Saves to `~/.ghostai/voice-profile.json`.
+
+Then save the profile and record the chosen tier so silent writes (learnings,
+reviews) follow the same anchor:
+
 ```bash
-GHOST_SLUG=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
-GHOST_DATA="$HOME/.ghostai/projects/$GHOST_SLUG"
-mkdir -p "$GHOST_DATA/reviews"
+target_dir=$(ghost_tier_dir "$chosen_tier")
+mkdir -p "$target_dir"
+# Write voice-profile.json to "$target_dir/voice-profile.json"
+
+# Record the anchor so learnings.jsonl and reviews/ land in the same tier.
+mkdir -p "$GHOST_TIER_PROJECT"
+echo "$chosen_tier" > "$GHOST_TIER_PROJECT/.tier"
 ```
 
-Save voice profile to `~/.ghostai/projects/{slug}/voice-profile.json`.
+If the author chose A (in-repo), drop a sensible `.gitignore` next to the
+profile so personal artifacts don't end up in git:
+
+```bash
+if [ "$chosen_tier" = "repo" ] && [ ! -f "$GHOST_TIER_REPO/.gitignore" ]; then
+  cat > "$GHOST_TIER_REPO/.gitignore" <<'GITIGNORE'
+# Commit voice-profile.json and style-guide.md so co-authors share them.
+# Ignore personal artifacts.
+reviews/
+learnings.jsonl
+.tier
+GITIGNORE
+fi
+```
 
 ## Step 10: Summary and Encouragement
 
