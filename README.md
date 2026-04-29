@@ -58,6 +58,8 @@ Claude Code discovers each `/ghost-*` command. No build step, no binaries.
 
 **`/ghost-review`** — A development editor that reads your entire manuscript, not just a chapter. Catches the problems authors and beta readers miss on first pass: a concept introduced in chapter 2 but defined in chapter 5, an argument that stalls in the middle, the same point repeated three times across different chapters, pacing that drags or rushes. This is where GhostAI's cross-chapter memory matters most.
 
+**`/ghost-rewrite`** — Section-level structural revision for when a passage already exists but the staging is wrong: unclear POV, buried lead, wrong order of ideas, characters or roles you can't tell apart. Diagnoses the structural bug first (the value is in articulating *what's actually wrong*), then proposes two structurally different rewrites — different framings of the same content — so you pick the angle rather than nudge your way into it. Sits between `/ghost-edit` (too small — sentence-level) and `/ghost-draft` (too big — starts over). Preserves your verbatim phrasings where they're working.
+
 **`/ghost-edit`** — A copy editor for one chapter at a time. Catches grammar issues, flags awkward sentences, and suggests cleaner phrasing without flattening your voice. Runs a publish-readiness checklist before you ship: broken links, missing images, typos, inconsistent capitalization, placeholder text you forgot to fill in.
 
 ### Progress
@@ -192,6 +194,7 @@ rough costs for a 50,000-word manuscript on Claude Sonnet:
 | `/ghost-draft` | ~$0.50-1.00 per chapter |
 | `/ghost-expand` | ~$0.10-0.30 per section |
 | `/ghost-interview` | ~$0.30-0.80 per chapter (depends on interview length) |
+| `/ghost-rewrite` | ~$0.15-0.40 per passage (two candidates by default) |
 | `/ghost-status` | ~$0.10 |
 
 These add up fast across a whole book. Again: get a Claude Pro or Claude Max plan.
@@ -209,6 +212,7 @@ ghostai/
   ghost-draft/SKILL.md          # First draft generator
   ghost-expand/SKILL.md         # Bullet-to-prose expander
   ghost-interview/SKILL.md      # Interview-driven writing (transcript → prose)
+  ghost-rewrite/SKILL.md        # Section-level structural revision
   ghost-status/SKILL.md         # Manuscript dashboard
   ghost-voice/SKILL.md          # Voice profile manager (cross-tier)
   shared/                       # Shared skill infrastructure

@@ -15,6 +15,7 @@ across chapters, and editing in place.
 | `/ghost-draft` | First draft generator | Turning an outline into prose |
 | `/ghost-expand` | Bullet-to-prose expander | Turning notes into polished text |
 | `/ghost-interview` | Interview-driven writing | When you know the material but can't get it on the page in your voice |
+| `/ghost-rewrite` | Section-level structural revision | When a passage exists but the staging is wrong (POV, order, framing) |
 | `/ghost-status` | Manuscript dashboard | Checking progress anytime |
 | `/ghost-voice` | Voice profile manager | Updating, promoting, or sharing your voice profile across tiers |
 
@@ -57,13 +58,18 @@ Key routing rules:
 - "Write a draft", "generate a chapter", "draft from outline" → invoke ghost-draft
 - "Expand", "flesh out", "turn bullets into prose" → invoke ghost-expand
 - "Interview me", "talk through a chapter", "let me explain this out loud", "this doesn't sound like me" → invoke ghost-interview
+- "Rewrite", "rejig", "this section feels awkward", "the structure is off", "I can't tell who's speaking", "the framing is wrong", "doesn't land", "buried lead" → invoke ghost-rewrite
 - "Status", "progress", "how's my book", "word count" → invoke ghost-status
 - "Update voice", "change voice profile", "promote voice", "share voice" → invoke ghost-voice
 
-Disambiguating the writing skills (draft vs. expand vs. interview): they
-overlap on verbs ("write", "draft") but differ on the author's *state*.
-Pick by what's blocking them, not what they typed:
+Disambiguating the writing skills (draft vs. expand vs. interview vs.
+rewrite vs. edit): they overlap on verbs ("write", "fix", "redo") but
+differ on the author's *state* and what's already on the page. Pick by
+what's blocking them, not what they typed:
 - Blank page, no notes → `/ghost-draft` (AI proposes, author reacts)
 - Notes/bullets, just need prose → `/ghost-expand`
 - Knows the material cold but the prose won't sound right → `/ghost-interview`
+- Passage exists, content roughly right, but staging is wrong (POV, order,
+  framing, who-does-what) → `/ghost-rewrite`
+- Passage exists, structure is fine, sentences need polish → `/ghost-edit`
 - "I'm stuck" with no other signal → ask which kind of stuck, then route
