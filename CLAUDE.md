@@ -16,6 +16,7 @@ across chapters, and editing in place.
 | `/ghost-expand` | Bullet-to-prose expander | Turning notes into polished text |
 | `/ghost-interview` | Interview-driven writing | When you know the material but can't get it on the page in your voice |
 | `/ghost-status` | Manuscript dashboard | Checking progress anytime |
+| `/ghost-train` | Author self-assessment | Teaching Ghost your strengths, weaknesses, and stylistic dislikes |
 | `/ghost-voice` | Voice profile manager | Updating, promoting, or sharing your voice profile across tiers |
 
 ## Manuscript Format
@@ -58,6 +59,7 @@ Key routing rules:
 - "Expand", "flesh out", "turn bullets into prose" → invoke ghost-expand
 - "Interview me", "talk through a chapter", "let me explain this out loud", "this doesn't sound like me" → invoke ghost-interview
 - "Status", "progress", "how's my book", "word count" → invoke ghost-status
+- "Train ghost", "teach ghost about my writing", "what am I good at", "what are my weaknesses", "things I dislike in writing" → invoke ghost-train
 - "Update voice", "change voice profile", "promote voice", "share voice" → invoke ghost-voice
 
 Disambiguating the writing skills (draft vs. expand vs. interview): they
@@ -66,4 +68,5 @@ Pick by what's blocking them, not what they typed:
 - Blank page, no notes → `/ghost-draft` (AI proposes, author reacts)
 - Notes/bullets, just need prose → `/ghost-expand`
 - Knows the material cold but the prose won't sound right → `/ghost-interview`
+- Wants Ghost to learn about *them*, not write a chapter → `/ghost-train`
 - "I'm stuck" with no other signal → ask which kind of stuck, then route
