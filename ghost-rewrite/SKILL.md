@@ -151,8 +151,12 @@ not `none`:
 
 - `$GHOST_VOICE_FILE` — the voice profile
 - `$GHOST_STYLE_FILE` — the style guide
-- `$GHOST_LEARNINGS_FILE` — terminology, phrasing, and structural
-  preferences
+- `$GHOST_LEARNINGS_FILE` — filter to entries relevant to rewriting:
+  `terminology`, `style`, `structure`, `strength` (lean in — preserve
+  staging moves that work), `weakness` (watch for — call out as
+  candidates for the structural fix), `dislike` (avoid — never re-stage
+  into a disliked pattern). Honor any `apply` field on the entry as the
+  specific guidance.
 
 Also check for prior rewrites of this passage: list files under
 `{anchor_tier}/rewrites/{chapter-slug}-*.md` whose recorded line range
