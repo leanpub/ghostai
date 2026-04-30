@@ -72,8 +72,10 @@ matching `*_TIER` is not `none`:
 - `$GHOST_VOICE_FILE` — the voice profile (one file, from the winning tier)
 - `$GHOST_STYLE_FILE` — the style guide (one file, from the winning tier)
 - `$GHOST_LEARNINGS_FILE` — the learnings log (one file, from the winning
-  tier); filter to terminology preferences and style decisions relevant to
-  editing
+  tier); filter to entries relevant to editing: `terminology`, `style`,
+  `strength` (lean in — preserve and reinforce), `weakness` (watch for —
+  flag during this pass), `dislike` (avoid — flag and suggest removal).
+  Honor any `apply` field on the entry as the specific guidance.
 
 Do not read the same config from a lower tier as well — that's exactly what
 the resolver is preventing.

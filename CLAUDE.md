@@ -17,6 +17,7 @@ across chapters, and editing in place.
 | `/ghost-interview` | Interview-driven writing | When you know the material but can't get it on the page in your voice |
 | `/ghost-rewrite` | Section-level structural revision | When a passage exists but the staging is wrong (POV, order, framing) |
 | `/ghost-status` | Manuscript dashboard | Checking progress anytime |
+| `/ghost-train` | Author self-assessment | Teaching Ghost your strengths, weaknesses, and stylistic dislikes |
 | `/ghost-voice` | Voice profile manager | Updating, promoting, or sharing your voice profile across tiers |
 
 ## Manuscript Format
@@ -60,6 +61,7 @@ Key routing rules:
 - "Interview me", "talk through a chapter", "let me explain this out loud", "this doesn't sound like me" → invoke ghost-interview
 - "Rewrite", "rejig", "this section feels awkward", "the structure is off", "I can't tell who's speaking", "the framing is wrong", "doesn't land", "buried lead" → invoke ghost-rewrite
 - "Status", "progress", "how's my book", "word count" → invoke ghost-status
+- "Train ghost", "teach ghost about my writing", "what am I good at", "what are my weaknesses", "things I dislike in writing" → invoke ghost-train
 - "Update voice", "change voice profile", "promote voice", "share voice" → invoke ghost-voice
 
 Disambiguating the writing skills (draft vs. expand vs. interview vs.
@@ -72,4 +74,5 @@ what's blocking them, not what they typed:
 - Passage exists, content roughly right, but staging is wrong (POV, order,
   framing, who-does-what) → `/ghost-rewrite`
 - Passage exists, structure is fine, sentences need polish → `/ghost-edit`
+- Wants Ghost to learn about *them*, not write a chapter → `/ghost-train`
 - "I'm stuck" with no other signal → ask which kind of stuck, then route

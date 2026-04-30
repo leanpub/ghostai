@@ -120,12 +120,25 @@ Reading time estimate: words / 250 (average reading speed for technical content)
 ## Load Learnings
 
 If `$GHOST_LEARNINGS_TIER` is not `none`, read `$GHOST_LEARNINGS_FILE`. Each
-line is a JSON object with fields: type, decision, source, ts, chapter.
-Filter learnings relevant to the current skill's task.
+line is a JSON object with fields: type, decision, source, ts, chapter, and
+sometimes `apply` (a hint for how to use the entry). Filter learnings
+relevant to the current skill's task.
 
-Skills that edit text should load: terminology, style learnings.
-Skills that review structure should load: structure learnings.
+Skills that edit text should load: terminology, style, strength, weakness,
+dislike learnings.
+Skills that draft or expand prose should load: terminology, style,
+strength, weakness, dislike learnings.
+Skills that review structure should load: structure, weakness learnings.
 All skills should load: factual learnings.
+
+The `strength`/`weakness`/`dislike` types come from `/ghost-train` and
+capture the author's self-assessment of their craft. Use them as soft
+constraints on generation and review:
+- `strength` → lean in (preserve in edit, mirror when drafting)
+- `weakness` → watch for (flag in edit, compensate when drafting)
+- `dislike` → avoid (never generate; flag and strip when found)
+
+If an entry has an `apply` field, prefer that hint over generic guidance.
 
 When a learning applies, mention it: "Applying your style preference: 'dataset'
 not 'data set' (from your last /ghost-edit session)."

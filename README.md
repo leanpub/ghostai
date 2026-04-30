@@ -66,6 +66,10 @@ Claude Code discovers each `/ghost-*` command. No build step, no binaries.
 
 **`/ghost-status`** — A dashboard for your book at a glance. Word counts per chapter, estimated reading time, chapter length balance (are any chapters three times longer than the rest?), how much is drafted versus still outline. Also estimates costs for running the other GhostAI skills against your current manuscript, so you can budget before kicking off a full review.
 
+### Training
+
+**`/ghost-train`** — Teaches GhostAI about you as a writer. Three short interviews — what you think you're good at, where you struggle, and what kinds of writing you actively dislike when you see them on your page. Answers are synthesized into your style guide and learnings so every other skill applies them automatically. Run it during onboarding, after a tough edit session, or any time you want Ghost to internalize how you actually think about your craft.
+
 ## Quick Start
 
 ```bash
@@ -214,6 +218,7 @@ ghostai/
   ghost-interview/SKILL.md      # Interview-driven writing (transcript → prose)
   ghost-rewrite/SKILL.md        # Section-level structural revision
   ghost-status/SKILL.md         # Manuscript dashboard
+  ghost-train/SKILL.md          # Author self-assessment (strengths/weaknesses/dislikes)
   ghost-voice/SKILL.md          # Voice profile manager (cross-tier)
   shared/                       # Shared skill infrastructure
     preamble-core.md            # Manuscript detection & loading
