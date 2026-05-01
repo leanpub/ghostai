@@ -23,10 +23,21 @@ across chapters, and editing in place.
 
 ## Manuscript Format
 
-GhostAI expects Leanpub-style manuscripts in Markua format:
-- `Book.txt` — chapter manifest (one filename per line)
-- `.md` files — chapters in Markua (Markdown for books)
-- `images/` — image assets
+GhostAI expects Leanpub-style manuscripts in Markua format, following the
+canonical Leanpub directory layout (see the reference sample book at
+https://github.com/leanpub/sample-leanpub-markdown-book):
+
+```
+manuscript/
+  Book.txt        — chapter manifest (one filename per line)
+  Sample.txt      — free sample manifest (optional, subset of Book.txt)
+  *.md            — chapters in Markua (Markdown for books)
+  images/         — image assets (referenced as images/foo.png in Markua)
+```
+
+All manuscript files live inside the `manuscript/` directory. `/ghost-start`
+scaffolds this structure automatically. The preamble also detects `Book.txt`
+at the repo root for backwards compatibility with older projects.
 
 ## Persistence
 

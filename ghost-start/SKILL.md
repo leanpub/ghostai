@@ -39,7 +39,7 @@ with a reason and a constructive direction.
 
 ```bash
 GHOST_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
-if [ -f "$GHOST_ROOT/Book.txt" ] || [ -f "$GHOST_ROOT/manuscript/Book.txt" ]; then
+if [ -f "$GHOST_ROOT/manuscript/Book.txt" ] || [ -f "$GHOST_ROOT/Book.txt" ]; then
   echo "MANUSCRIPT_EXISTS"
 else
   echo "NO_MANUSCRIPT"
@@ -48,10 +48,13 @@ fi
 
 **If MANUSCRIPT_EXISTS:** Use AskUserQuestion:
 
-Tell the author this directory already has a manuscript. Options:
+Tell the author this directory already has a manuscript. If the Book.txt is at
+the repo root (not inside `manuscript/`), mention that Leanpub's canonical
+structure uses a `manuscript/` directory and offer to move it. Options:
 - A) Add new chapters to your existing book
 - B) Start fresh (I'll help you restructure)
-- C) Cancel
+- C) Move existing files into manuscript/ (if at repo root)
+- D) Cancel
 
 ## Step 2: The Topic Conversation
 
@@ -175,11 +178,55 @@ Iterate until approved.
 
 ## Step 8: Create Manuscript Files
 
-Read `shared/markua.md` for Markua syntax and the HTML comments policy.
+Read `shared/markua.md` for Markua syntax and `shared/leanpub.md` for the
+canonical directory structure.
 
-Create Book.txt, chapter .md files (in Markua format), and images/ directory.
-Each chapter file includes the refined outline points as a visible TODO list
-so the author can see them in rendered markdown and Leanpub previews.
+Create the Leanpub manuscript directory structure:
+
+```
+manuscript/
+  Book.txt              # Chapter manifest
+  Sample.txt            # Free sample (first chapter)
+  chapter-01.md         # One .md file per chapter
+  chapter-02.md
+  ...
+  images/               # Image assets directory
+```
+
+All files go inside `manuscript/` — this is the canonical Leanpub layout
+(see https://github.com/leanpub/sample-leanpub-markdown-book).
+
+**Book.txt** lists chapters in reading order, one filename per line. Use
+`{frontmatter}`, `{mainmatter}`, `{backmatter}` section markers if the
+outline includes a preface, introduction, or appendix:
+
+```
+{frontmatter}
+preface.md
+{mainmatter}
+chapter-01.md
+chapter-02.md
+chapter-03.md
+```
+
+For simple books with no front/backmatter, just list the chapter files:
+
+```
+chapter-01.md
+chapter-02.md
+chapter-03.md
+```
+
+**Sample.txt** lists chapters for the free preview. Default to the first
+chapter so the author has a working sample immediately:
+
+```
+chapter-01.md
+```
+
+**Chapter files** use Markua format (.md). Each includes the refined outline
+points as a visible TODO list so the author can see them in rendered markdown
+and Leanpub previews:
 
 ```markua
 # [Chapter Title]
@@ -192,6 +239,8 @@ so the author can see them in rendered markdown and Leanpub previews.
 - [Key concept 3]
 - [How this connects to the next chapter]
 ```
+
+**images/** — create the empty directory so image references work from day one.
 
 ## Step 9: Set Up Persistence
 
@@ -250,7 +299,8 @@ fi
 └─────────────────────────────────────────────────┘
 ```
 
-List what was created. Then end with something specific to their book:
+List what was created (showing the `manuscript/` structure). Then end with
+something specific to their book:
 
 "You're writing [specific book description] for [specific reader].
 The hardest part is starting, and you just did that. Open
