@@ -189,6 +189,8 @@ what can you cut without losing the core transformation?"
 
 ## Step 7: Save the Outline
 
+Read `shared/markua.md` for Markua syntax and the HTML comments policy.
+
 After the author approves the final outline, save to `outline.md`:
 
 ```markdown
