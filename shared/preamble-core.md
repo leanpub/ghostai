@@ -49,7 +49,22 @@ echo "STYLE_GUIDE: $GHOST_STYLE_TIER${GHOST_STYLE_FILE:+ ($GHOST_STYLE_FILE)}"
 echo "LEARNINGS: $GHOST_LEARNINGS_TIER${GHOST_LEARNINGS_FILE:+ ($GHOST_LEARNINGS_FILE)}"
 echo "REVIEWS: $GHOST_REVIEWS_TIER${GHOST_REVIEWS_DIR:+ ($GHOST_REVIEWS_DIR)}"
 echo "ANCHOR_TIER: $GHOST_ANCHOR_TIER"
+
+# Check for GhostAI updates (at most once per day)
+# shellcheck source=update-check.sh
+source "$GHOST_SKILL_DIR/shared/update-check.sh"
 ```
+
+## Update Check
+
+If the preamble output includes `UPDATE_AVAILABLE`, surface it to the author
+before proceeding with the skill:
+
+"A GhostAI update is available ({N} new commits). Run `/ghost-update` to
+install it, or continue with the current version."
+
+Then proceed with the skill normally. Don't block on the update — it's
+informational. The check runs at most once per 24 hours.
 
 **No mkdir at read time.** The preamble used to create
 `~/.ghostai/projects/{slug}/` unconditionally. It no longer does — directories

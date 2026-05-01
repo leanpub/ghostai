@@ -85,6 +85,19 @@ Open Claude Code in any directory and run `/ghost-status`. If you see a dashboar
 
 **To update later:** `cd ~/.claude/skills/ghostai && git pull && ./install.sh`
 
+### Updating
+
+GhostAI checks for updates once per day when you run any `/ghost-*` command.
+When an update is available, it'll let you know. To update:
+
+```bash
+# Option 1: Use the skill
+/ghost-update
+
+# Option 2: Run the script directly
+~/.claude/skills/ghostai/update.sh
+```
+
 ### Requirements
 
 - [Claude Code](https://claude.ai/code) (or any SKILL.md-compatible agent: Cursor, Gemini CLI, Codex CLI)
@@ -286,6 +299,10 @@ learnings so every other skill applies them automatically. Run it during onboard
 after a tough edit session, or any time you want Ghost to internalize how you
 actually think about your craft.
 
+### Maintenance
+
+**`/ghost-update`** — Updates GhostAI to the latest version. Pulls the latest code and re-creates skill symlinks. GhostAI also checks for updates automatically once per day when you run any `/ghost-*` command, and will let you know when a new version is available. origin/main
+
 ## How GhostAI Remembers
 
 Most AI writing tools are stateless — every session starts from scratch. GhostAI
@@ -474,6 +491,7 @@ ghostai/
   ghost-status/SKILL.md         # Manuscript dashboard
   ghost-train/SKILL.md          # Author self-assessment
   ghost-voice/SKILL.md          # Voice profile manager
+  ghost-update/SKILL.md         # Self-updater origin/main
   shared/                       # Shared skill infrastructure
     preamble-core.md            # Manuscript detection & loading
     resolve-config.sh           # 3-tier config resolver
@@ -484,6 +502,9 @@ ghostai/
     leanpub.md                  # Leanpub conventions
     output-format.md            # Terminal output formatting
     interaction-states.md       # Error/empty state handling
+    update-check.sh             # Daily update checker (sourced by preamble)
+  install.sh                    # Installer (creates skill symlinks)
+  update.sh                     # Updater (pull + re-link)
   CLAUDE.md                     # Skill routing rules
   README.md                     # This file
 ```

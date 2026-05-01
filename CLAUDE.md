@@ -19,6 +19,7 @@ across chapters, and editing in place.
 | `/ghost-status` | Manuscript dashboard | Checking progress anytime |
 | `/ghost-train` | Author self-assessment | Teaching Ghost your strengths, weaknesses, and stylistic dislikes |
 | `/ghost-voice` | Voice profile manager | Updating, promoting, or sharing your voice profile across tiers |
+| `/ghost-update` | Update GhostAI | Updating to the latest version |
 
 ## Manuscript Format
 
@@ -63,6 +64,7 @@ Key routing rules:
 - "Status", "progress", "how's my book", "word count" → invoke ghost-status
 - "Train ghost", "teach ghost about my writing", "what am I good at", "what are my weaknesses", "things I dislike in writing" → invoke ghost-train
 - "Update voice", "change voice profile", "promote voice", "share voice" → invoke ghost-voice
+- "Update ghostai", "update ghost", "upgrade ghostai", "get latest ghost" → invoke ghost-update
 
 Disambiguating the writing skills (draft vs. expand vs. interview vs.
 rewrite vs. edit): they overlap on verbs ("write", "fix", "redo") but
