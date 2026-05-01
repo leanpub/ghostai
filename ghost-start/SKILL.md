@@ -175,20 +175,22 @@ Iterate until approved.
 
 ## Step 8: Create Manuscript Files
 
+Read `shared/markua.md` for Markua syntax and the HTML comments policy.
+
 Create Book.txt, chapter .md files (in Markua format), and images/ directory.
-Same file creation as before, but each chapter file includes the refined
-outline points as HTML comments.
+Each chapter file includes the refined outline points as a visible TODO list
+so the author can see them in rendered markdown and Leanpub previews.
 
 ```markua
 # [Chapter Title]
 
-<!-- Chapter outline:
+**TODO:** This chapter covers:
+
 - [Specific outcome this chapter delivers]
 - [Key concept 1]
 - [Key concept 2]
 - [Key concept 3]
 - [How this connects to the next chapter]
--->
 ```
 
 ## Step 9: Set Up Persistence
