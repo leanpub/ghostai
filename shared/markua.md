@@ -7,6 +7,16 @@ Manual: https://leanpub.com/markua/read
 GhostAI skills must generate valid Markua and validate it in author manuscripts.
 This is the condensed reference covering what authors actually use.
 
+## Manuscript Directory
+
+Leanpub expects all book files inside a `manuscript/` directory at the repo
+root. See `shared/leanpub.md` for the full layout. Key contents:
+
+- `manuscript/Book.txt` — chapter manifest
+- `manuscript/Sample.txt` — free-sample manifest (optional)
+- `manuscript/*.md` — chapter files in Markua format
+- `manuscript/images/` — image assets (referenced as `images/foo.png`)
+
 ## Book.txt (Manifest File)
 
 Book.txt lists chapter files in reading order, one per line:
@@ -27,7 +37,16 @@ glossary.md
 - `{frontmatter}`, `{mainmatter}`, `{backmatter}` are section markers
 - Blank lines are ignored
 - Lines starting with `#` are comments
-- Each .md filename is relative to the manuscript directory
+- Each .md filename is relative to the `manuscript/` directory
+
+## Sample.txt (Free Sample Manifest)
+
+Optional. Same format as Book.txt — one filename per line. Lists the chapters
+included in the free preview that readers can browse before purchasing:
+
+```
+chapter-01.md
+```
 
 ## Headings
 

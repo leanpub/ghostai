@@ -12,12 +12,12 @@ Run this bash block first:
 GHOST_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 GHOST_SKILL_DIR=$(dirname "$(dirname "$0")" 2>/dev/null || echo "$HOME/.claude/skills/ghost-ai")
 
-# Find Book.txt (Leanpub manifest)
+# Find Book.txt (Leanpub manifest) — prefer manuscript/ (canonical layout)
 BOOK_TXT=""
-if [ -f "$GHOST_ROOT/Book.txt" ]; then
-  BOOK_TXT="$GHOST_ROOT/Book.txt"
-elif [ -f "$GHOST_ROOT/manuscript/Book.txt" ]; then
+if [ -f "$GHOST_ROOT/manuscript/Book.txt" ]; then
   BOOK_TXT="$GHOST_ROOT/manuscript/Book.txt"
+elif [ -f "$GHOST_ROOT/Book.txt" ]; then
+  BOOK_TXT="$GHOST_ROOT/Book.txt"
 fi
 
 # Detect manuscript base directory

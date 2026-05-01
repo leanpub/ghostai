@@ -19,34 +19,29 @@ GhostAI skills should support this iterative loop:
 
 ## Manuscript Directory Structure
 
-A typical Leanpub book project:
-
-```
-my-book/
-  Book.txt              # Chapter manifest (reading order)
-  Sample.txt            # Which chapters are in the free sample (optional)
-  chapter-01.md         # Chapter files in Markua format
-  chapter-02.md
-  chapter-03.md
-  images/               # Image assets
-    diagram-01.png
-    screenshot.jpg
-  code/                 # External code samples (optional)
-    example.rb
-    demo.py
-```
-
-Some authors use a `manuscript/` subdirectory:
+Leanpub books use a `manuscript/` directory. Everything — manifests, chapters,
+images — lives inside it. This is the canonical structure from Leanpub's own
+sample book (https://github.com/leanpub/sample-leanpub-markdown-book):
 
 ```
 my-book/
   manuscript/
-    Book.txt
-    chapter-01.md
-    ...
+    Book.txt              # Chapter manifest (reading order)
+    Sample.txt            # Which chapters are in the free sample (optional)
+    chapter-01.md         # Chapter files in Markua format
+    chapter-02.md
+    chapter-03.md
+    images/               # Image assets (referenced as images/foo.png in Markua)
+      diagram-01.png
+      screenshot.jpg
+    code/                 # External code samples (optional)
+      example.rb
+      demo.py
 ```
 
-GhostAI's preamble checks both locations.
+**`/ghost-start` must always scaffold into `manuscript/`.** GhostAI's preamble
+also detects Book.txt at the repo root for backwards compatibility with older
+projects, but new books should always use the `manuscript/` layout.
 
 ## Book.txt Format
 
@@ -68,13 +63,17 @@ appendix.md
 
 ## Sample.txt
 
-Optional. Lists which chapters are included in the free sample:
+Optional. Lists which chapters appear in the free sample that readers can
+preview before purchasing. Same format as Book.txt (one filename per line),
+but typically a subset:
 
 ```
-preface.md
 chapter-01.md
 chapter-02.md
 ```
+
+When `/ghost-start` scaffolds a book, it creates a `Sample.txt` containing the
+first chapter so the author has a working sample from day one.
 
 ## Leanpub Author Types
 
