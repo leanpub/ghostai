@@ -181,20 +181,19 @@ Iterate until approved.
 Read `shared/markua.md` for Markua syntax and `shared/leanpub.md` for the
 canonical directory structure.
 
-Create the Leanpub manuscript directory structure:
+Create the Leanpub manuscript directory structure matching the default book
+template (https://github.com/leanpub/default-new-book-content):
 
 ```
 manuscript/
   Book.txt              # Chapter manifest
-  Sample.txt            # Free sample (first chapter)
   chapter-01.md         # One .md file per chapter
   chapter-02.md
   ...
-  images/               # Image assets directory
+  resources/            # Images and code samples
 ```
 
-All files go inside `manuscript/` — this is the canonical Leanpub layout
-(see https://github.com/leanpub/sample-leanpub-markdown-book).
+All files go inside `manuscript/`.
 
 **Book.txt** lists chapters in reading order, one filename per line. Use
 `{frontmatter}`, `{mainmatter}`, `{backmatter}` section markers if the
@@ -217,16 +216,28 @@ chapter-02.md
 chapter-03.md
 ```
 
-**Sample.txt** lists chapters for the free preview. Default to the first
-chapter so the author has a working sample immediately:
-
-```
-chapter-01.md
-```
-
 **Chapter files** use Markua format (.md). Each includes the refined outline
 points as a visible TODO list so the author can see them in rendered markdown
-and Leanpub previews:
+and Leanpub previews.
+
+Mark the first chapter with `{sample: true}` so the author has a working
+free sample from day one (there is no separate Sample.txt file — sample
+inclusion is per-chapter via the attribute):
+
+```markua
+{sample: true}
+# [First Chapter Title]
+
+**TODO:** This chapter covers:
+
+- [Specific outcome this chapter delivers]
+- [Key concept 1]
+- [Key concept 2]
+- [Key concept 3]
+- [How this connects to the next chapter]
+```
+
+Subsequent chapters omit the `{sample: true}` attribute:
 
 ```markua
 # [Chapter Title]
@@ -240,7 +251,9 @@ and Leanpub previews:
 - [How this connects to the next chapter]
 ```
 
-**images/** — create the empty directory so image references work from day one.
+**resources/** — create the empty directory for images and code samples.
+Leanpub resolves resource references by bare filename from this directory
+(e.g., `![](photo.png)` finds `manuscript/resources/photo.png`).
 
 ## Step 9: Set Up Persistence
 

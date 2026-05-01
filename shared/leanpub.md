@@ -20,28 +20,38 @@ GhostAI skills should support this iterative loop:
 ## Manuscript Directory Structure
 
 Leanpub books use a `manuscript/` directory. Everything — manifests, chapters,
-images — lives inside it. This is the canonical structure from Leanpub's own
-sample book (https://github.com/leanpub/sample-leanpub-markdown-book):
+resources — lives inside it. This is the canonical structure from Leanpub's
+default book template (https://github.com/leanpub/default-new-book-content):
 
 ```
 my-book/
   manuscript/
     Book.txt              # Chapter manifest (reading order)
-    Sample.txt            # Which chapters are in the free sample (optional)
     chapter-01.md         # Chapter files in Markua format
     chapter-02.md
     chapter-03.md
-    images/               # Image assets (referenced as images/foo.png in Markua)
+    resources/            # Images AND code samples
       diagram-01.png
       screenshot.jpg
-    code/                 # External code samples (optional)
       example.rb
-      demo.py
 ```
 
 **`/ghost-start` must always scaffold into `manuscript/`.** GhostAI's preamble
 also detects Book.txt at the repo root for backwards compatibility with older
 projects, but new books should always use the `manuscript/` layout.
+
+### Resources directory
+
+Leanpub uses `manuscript/resources/` (not `images/`) for all non-chapter
+assets: images, code files, videos. In Markua, reference them by bare
+filename — Leanpub resolves from `resources/` automatically:
+
+```markua
+![Palm Trees](palm-trees.jpg)
+
+{format: ruby}
+![Hello World](hello.rb)
+```
 
 ## Book.txt Format
 
@@ -61,19 +71,19 @@ appendix.md
 - Blank lines and `#` comments are ignored
 - Files are relative to the directory containing Book.txt
 
-## Sample.txt
+## Free Sample
 
-Optional. Lists which chapters appear in the free sample that readers can
-preview before purchasing. Same format as Book.txt (one filename per line),
-but typically a subset:
+Leanpub can generate a free sample book for prospective readers. Chapters are
+marked for inclusion using the `{sample: true}` attribute above the chapter
+heading — there is no separate Sample.txt manifest file:
 
+```markua
+{sample: true}
+# This Chapter Is in the Free Sample
 ```
-chapter-01.md
-chapter-02.md
-```
 
-When `/ghost-start` scaffolds a book, it creates a `Sample.txt` containing the
-first chapter so the author has a working sample from day one.
+When `/ghost-start` scaffolds a book, it marks the first chapter with
+`{sample: true}` so the author has a working sample from day one.
 
 ## Leanpub Author Types
 

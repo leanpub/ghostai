@@ -409,15 +409,17 @@ See [`shared/config-hierarchy.md`](shared/config-hierarchy.md) for the full mode
 ## Manuscript Format
 
 GhostAI expects [Markua](https://markua.com) format (Markdown for books), the
-native format for [Leanpub](https://leanpub.com):
+native format for [Leanpub](https://leanpub.com). Books follow the
+[default Leanpub template](https://github.com/leanpub/default-new-book-content):
 
 ```
 my-book/
-  Book.txt          # Chapter manifest (one filename per line)
-  introduction.md   # Chapters in Markua
-  chapter-01.md
-  chapter-02.md
-  images/           # Image assets
+  manuscript/
+    Book.txt          # Chapter manifest (one filename per line)
+    introduction.md   # Chapters in Markua
+    chapter-01.md
+    chapter-02.md
+    resources/        # Images and code samples
 ```
 
 `Book.txt` lists chapters in reading order:

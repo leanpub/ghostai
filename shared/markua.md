@@ -13,9 +13,8 @@ Leanpub expects all book files inside a `manuscript/` directory at the repo
 root. See `shared/leanpub.md` for the full layout. Key contents:
 
 - `manuscript/Book.txt` — chapter manifest
-- `manuscript/Sample.txt` — free-sample manifest (optional)
 - `manuscript/*.md` — chapter files in Markua format
-- `manuscript/images/` — image assets (referenced as `images/foo.png`)
+- `manuscript/resources/` — images and code samples (referenced by bare filename)
 
 ## Book.txt (Manifest File)
 
@@ -38,15 +37,6 @@ glossary.md
 - Blank lines are ignored
 - Lines starting with `#` are comments
 - Each .md filename is relative to the `manuscript/` directory
-
-## Sample.txt (Free Sample Manifest)
-
-Optional. Same format as Book.txt — one filename per line. Lists the chapters
-included in the free preview that readers can browse before purchasing:
-
-```
-chapter-01.md
-```
 
 ## Headings
 
@@ -126,27 +116,34 @@ end
 ```
 ````
 
-Code from external files:
+Code from external files (in `manuscript/resources/`):
 
 ```markua
+{format: ruby}
 ![A Ruby Program](hello.rb)
 ```
 
 ## Images and Figures
 
+Images go in `manuscript/resources/` and are referenced by bare filename
+(Leanpub resolves from `resources/` automatically):
+
 ```markua
-![Alt text](images/photo.png "Figure Title")
+![Alt text](photo.png "Figure Title")
 ```
 
 With attributes:
 
 ```markua
 {width: "60%"}
-![Alt text](images/diagram.png "Figure Title")
+![Alt text](diagram.png "Figure Title")
 
 {class: fullwidth}
-![Full-width image](images/wide.png)
+![Full-width image](wide.png)
 ```
+
+If no title is provided and the `alt-title` document setting is the default
+(`all`), the alt text is used as the figure title.
 
 ## Links
 
@@ -195,9 +192,11 @@ At the very top of the manuscript (before any content):
 }
 ```
 
-## Sample Content
+## Free Sample
 
-Mark chapters/sections for inclusion in the free sample:
+Mark chapters for inclusion in the free sample using the `{sample: true}`
+attribute above the chapter heading. There is no separate Sample.txt manifest
+file — sample inclusion is controlled per-chapter:
 
 ```markua
 {sample: true}
