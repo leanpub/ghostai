@@ -11,6 +11,47 @@ Most AI writing tools generate slop. GhostAI keeps your voice. It reads your ful
 manuscript structure, maintains context across chapters, and edits in place — no
 copy-paste, no browser window. The AI works where you work.
 
+## Philosophy
+
+GhostAI is built on three design principles.
+
+**The AI suggests. You decide.** Every skill has an approval gate. `/ghost-start`
+shows you its topic sharpening and asks before it scaffolds. `/ghost-draft` proposes
+a section-by-section plan and waits for your sign-off before writing any prose.
+`/ghost-rewrite` shows you structural skeletons — not prose — so you pick the angle
+before a single sentence is written. `/ghost-edit` presents every change as a
+suggestion you accept or reject, like a real editor in track changes. Nothing is
+auto-applied. Nothing ships without your yes.
+
+Here's what that looks like in practice. You run `/ghost-start` and type your topic:
+
+> *"GhostAI."*
+
+It pushes back:
+
+> *"That's a tool, not a book. What's the ONE thing your reader should walk away
+> able to do?"*
+
+You try again. It offers sharper versions. You pick one. The same pattern repeats
+for audience — "developers" gets rejected because it's not a person. By the time
+the interview is done, you've landed on a topic, an audience, and an angle that are
+specific enough to write to. The sharpening is the value, not the generation.
+
+**Diagnose before you act.** GhostAI never jumps straight to output. `/ghost-rewrite`
+maps the current structure of a passage paragraph by paragraph, then articulates
+what's actually wrong before proposing alternatives. `/ghost-review` reads the full
+manuscript before surfacing a single finding. `/ghost-outline` challenges every
+chapter to earn its place before suggesting changes. The diagnosis is often more
+valuable than the fix — once you can see the shape of the problem, you frequently
+know the answer yourself.
+
+**Your voice is non-negotiable.** Every skill reads your voice profile on every run.
+`/ghost-edit` runs a voice-consistency check on every pass. `/ghost-interview`
+preserves your verbatim phrasing. `/ghost-rewrite` tags every sentence as verbatim,
+rephrased, or new so you can see exactly what changed. Slop detection is advisory —
+flagged, never auto-fixed. The whole system is designed so that the more you use it,
+the more it sounds like you, not less.
+
 ## Install
 
 **Step 1 — Clone the repo into your Claude skills directory.**
@@ -245,32 +286,108 @@ learnings so every other skill applies them automatically. Run it during onboard
 after a tough edit session, or any time you want Ghost to internalize how you
 actually think about your craft.
 
-## Voice Preservation
+## How GhostAI Remembers
 
-The #1 complaint with AI writing tools is voice erasure. GhostAI addresses this at
-every layer:
+Most AI writing tools are stateless — every session starts from scratch. GhostAI
+maintains six persistent artifacts that accumulate across sessions, so the toolkit
+gets smarter about your book and your voice the more you use it.
 
-- **Voice profiling.** Analyzes your existing writing to extract style patterns —
-  sentence length, vocabulary, tone, signature phrases.
-- **Style guide.** Auto-generates a human-readable style guide from your manuscript.
-- **Advisory slop detection.** Flags AI-generated patterns (unearned emphasis,
-  formulaic transitions, empty attribution) without auto-correcting. You decide.
-- **Direct quotes.** References your actual text in feedback, not abstractions.
-- **Session memory.** Remembers terminology preferences and style decisions across
-  sessions via a learnings file.
+### Voice Profile (`voice-profile.json`)
 
-Your voice profile lives in one of three tiers (highest existing wins):
+Your extracted writing style: sentence length distribution, vocabulary level,
+tone, person, formality, signature phrases, em-dash density. Created by
+`/ghost-start` from a writing sample you provide (a blog post, an email, a
+chapter you've already written). Every skill reads this file on every run — it's
+the primary mechanism that keeps generated and edited prose sounding like you
+instead of like a model.
+
+Update it from a fresh sample with `/ghost-voice`. The profile improves as you
+feed it more of your writing.
+
+### Style Guide (`style-guide.md`)
+
+A human-readable document of your stated preferences — what you're good at, where
+you struggle, and the patterns you actively dislike on your page. Created by
+`/ghost-train` through three short interviews. Skills use it as a soft constraint:
+lean into stated strengths, flag stated weaknesses harder, never generate stated
+dislikes.
+
+Unlike the voice profile (which is extracted from samples), the style guide captures
+what you *think* about your own writing. Both matter. They complement each other.
+
+### Learnings (`learnings.jsonl`)
+
+A running log of terminology decisions, style preferences, and craft insights —
+one JSON entry per line, accumulated across sessions. When `/ghost-edit` discovers
+you prefer "dataset" over "data set", it appends an entry. When `/ghost-rewrite`
+learns you prefer cold opens over setup paragraphs, it logs that. When
+`/ghost-train` records that you dislike rhetorical questions, that goes in too.
+
+Every skill loads the relevant learnings on startup. Types include:
+
+| Type | Source | Used by |
+|------|--------|---------|
+| `terminology` | `/ghost-edit` | All editing and writing skills |
+| `style` | `/ghost-edit`, `/ghost-interview` | All editing and writing skills |
+| `factual` | `/ghost-edit`, `/ghost-review` | All skills |
+| `structure` | `/ghost-rewrite`, `/ghost-review` | Structure-aware skills |
+| `strength` | `/ghost-train` | Drafting (lean in), editing (preserve) |
+| `weakness` | `/ghost-train` | Drafting (compensate), editing (flag harder) |
+| `dislike` | `/ghost-train` | Drafting (never generate), editing (strip) |
+
+The learnings file is append-only and grows over the life of your book. It's the
+primary mechanism for GhostAI getting more opinionated in your direction over time.
+
+### Review Reports (`reviews/`)
+
+Timestamped reports from `/ghost-review` — each one a full-manuscript development
+edit capturing structural issues, repetition, tonal drift, gaps, and cross-chapter
+contradictions. Saved so you can track how the manuscript evolved and so future
+reviews can reference prior findings.
+
+### Rewrite Logs (`rewrites/`)
+
+Detailed records from `/ghost-rewrite` — the original passage, the structural
+diagnosis, the candidate skeletons considered, the chosen skeleton, the filled-in
+prose with provenance markers (`[v]` verbatim, `[r]` rephrased, `[n]` new), and the
+consistency sweep results. Future runs on the same passage read prior logs to avoid
+repeating strategies that already failed. `/ghost-review` can surface "passages with
+multiple rewrites" as a signal that something deeper is wrong.
+
+### Interview Transcripts
+
+Saved by `/ghost-interview` alongside the manuscript. Each transcript records the
+questions asked, your verbatim answers, and any follow-up exchanges. Transcripts are
+reusable: you can re-synthesize prose from them later, feed them into your voice
+profile as writing samples, or reference them when the same topic comes up in
+another chapter.
+
+### Where it all lives
+
+Every artifact lives in one of three tiers. The highest existing tier wins on load
+(no merging):
 
 | Tier | Location | Use case |
 |------|----------|----------|
-| **Global** | `~/.ghostai/` | A voice you bring to every new book |
-| **Project-local** | `~/.ghostai/projects/{slug}/` | Per-book on this machine |
 | **In-repo** | `{repo}/.ghostai/` | Committable; co-authors share it |
+| **Project-local** | `~/.ghostai/projects/{slug}/` | Per-book on this machine |
+| **Global** | `~/.ghostai/` | A voice you bring to every new book |
 
-GhostAI asks where to save when you first create the profile (during `/ghost-start`
-or via `/ghost-voice`). Run `/ghost-voice` later to update, promote between tiers,
-or share with co-authors. See
-[`shared/config-hierarchy.md`](shared/config-hierarchy.md) for the full model.
+GhostAI asks where to save when you first create a profile (during `/ghost-start`
+or `/ghost-voice`), and remembers your choice via a `.tier` file so subsequent
+silent writes (learnings, reviews, rewrite logs) land in the same tier without
+re-prompting.
+
+**Picking a tier:**
+
+- **One book, one machine** → project-local (the default)
+- **One book, multiple machines** → in-repo (syncs through git)
+- **Many books, consistent voice** → global
+- **Co-authored book** → in-repo for voice and style guide; personal learnings
+  can stay project-local
+
+Run `/ghost-voice` to update, promote between tiers, or share with co-authors.
+See [`shared/config-hierarchy.md`](shared/config-hierarchy.md) for the full model.
 
 ## Manuscript Format
 
