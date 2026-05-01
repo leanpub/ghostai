@@ -31,6 +31,19 @@ git clone https://github.com/leanpub/ghostai.git ~/.claude/skills/ghostai
 The clone downloads the skill files. The install script creates symlinks so
 Claude Code discovers each `/ghost-*` command. No build step, no binaries.
 
+### Updating
+
+GhostAI checks for updates once per day when you run any `/ghost-*` command.
+When an update is available, it'll let you know. To update:
+
+```bash
+# Option 1: Use the skill
+/ghost-update
+
+# Option 2: Run the script directly
+~/.claude/skills/ghostai/update.sh
+```
+
 ### Requirements
 
 - [Claude Code](https://claude.ai/code) (or any SKILL.md-compatible agent: Cursor, Gemini CLI, Codex CLI)
@@ -69,6 +82,10 @@ Claude Code discovers each `/ghost-*` command. No build step, no binaries.
 ### Training
 
 **`/ghost-train`** — Teaches GhostAI about you as a writer. Three short interviews — what you think you're good at, where you struggle, and what kinds of writing you actively dislike when you see them on your page. Answers are synthesized into your style guide and learnings so every other skill applies them automatically. Run it during onboarding, after a tough edit session, or any time you want Ghost to internalize how you actually think about your craft.
+
+### Maintenance
+
+**`/ghost-update`** — Updates GhostAI to the latest version. Pulls the latest code and re-creates skill symlinks. GhostAI also checks for updates automatically once per day when you run any `/ghost-*` command, and will let you know when a new version is available.
 
 ## Quick Start
 
@@ -220,6 +237,7 @@ ghostai/
   ghost-status/SKILL.md         # Manuscript dashboard
   ghost-train/SKILL.md          # Author self-assessment (strengths/weaknesses/dislikes)
   ghost-voice/SKILL.md          # Voice profile manager (cross-tier)
+  ghost-update/SKILL.md         # Self-updater
   shared/                       # Shared skill infrastructure
     preamble-core.md            # Manuscript detection & loading
     resolve-config.sh           # 3-tier config resolver (sourced by preamble)
@@ -230,6 +248,9 @@ ghostai/
     leanpub.md                  # Leanpub conventions
     output-format.md            # Terminal output formatting
     interaction-states.md       # Error/empty state handling
+    update-check.sh             # Daily update checker (sourced by preamble)
+  install.sh                    # Installer (creates skill symlinks)
+  update.sh                     # Updater (pull + re-link)
   CLAUDE.md                     # Skill routing rules
   README.md                     # This file
 ```
